@@ -45,7 +45,7 @@ app.get("/notes", async (request, response) => {
   response.send(item);
 });
 
-app.put("/user", (request, response) => {
+app.put("/notes", (request, response) => {
   const { id, note, name } = request.body;
   // array findIndex 같은 id 탐색
   // 찾은 index 값을 가지고 원하는 데이터 변경
@@ -55,6 +55,12 @@ app.put("/user", (request, response) => {
   const idx = data.findIndex((item) => item.id === id);
   data[idx].name = body.name;
   data[idx].note = body.note;
+  response.sendStatus(204);
+});
+
+app.delete("/note/:noteId", (request, response) => {
+  const filtered = data.filter((item) => item.id !== request.body.noteId);
+  console.log(filtered);
   response.sendStatus(204);
 });
 
