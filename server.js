@@ -8,41 +8,54 @@ const data = [
   { id: "id-2", name: "name-2", note: "note info 2" },
   { id: "id-3", name: "name-3", note: "note info 3" },
 ];
-app.get("/notes", async (req, res) => {
-  res.send(data);
+app.get("/notes", async (request, response) => {
+  response.send(data);
 });
 app.post(
   "/notes",
-  (req, res, next) => {
+  (request, response, next) => {
     console.log("Middleware test");
     next();
   },
-  async (req, res) => {
-    console.log(res.body);
-    data.push(req.body);
-    res.sendStatus(201);
+  async (request, response) => {
+    console.log(response.body);
+    data.push(request.body);
+    response.sendStatus(201);
   }
 );
 
 // path parameter
-app.get("/notes/:noteId", async (req, res) => {
-  console.log(req.params);
+app.get("/notes/:noteId", async (request, response) => {
+  console.log(request.params);
   const item = data.find((item) => {
-    item.id == req.params.noteId;
+    item.id == request.params.noteId;
   });
-  res.send(item);
+  response.send(item);
 });
 // query parameter
-app.get("/notes", async (req, res) => {
-  console.log(req.query);
-  const { id } = req.query;
+app.get("/notes", async (request, response) => {
+  console.log(request.query);
+  const { id } = request.query;
   if (!id) {
-    res.send({});
+    response.send({});
   }
   const item = data.find((item) => {
     item.id == id;
   });
-  res.send(item);
+  response.send(item);
+});
+
+app.put("/user", (request, response) => {
+  const { id, note, name } = request.body;
+  // array findIndex 같은 id 탐색
+  // 찾은 index 값을 가지고 원하는 데이터 변경
+  if (!id) response.sendStatus(400);
+  if (!note) response.sendStatus(400);
+  if (!name) response.sendStatus(400);
+  const idx = data.findIndex((item) => item.id === id);
+  data[idx].name = body.name;
+  data[idx].note = body.note;
+  response.sendStatus(204);
 });
 
 app.listen(port, function () {
