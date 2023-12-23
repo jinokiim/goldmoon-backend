@@ -1,5 +1,14 @@
 const express = require("express");
 
+const mysql = require("mysql2");
+
+const pool = mysql.createPool({
+  host: "database-1.c562yaoey8c5.ap-northeast-2.rds.amazonaws.com",
+  user: "admin",
+  password: "jh785445",
+  port: 3306,
+});
+
 const app = express();
 const port = 8080;
 app.use(express.json());
