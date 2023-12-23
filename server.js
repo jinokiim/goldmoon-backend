@@ -27,10 +27,22 @@ app.post(
 // path parameter
 app.get("/notes/:noteId", async (req, res) => {
   console.log(req.params);
-  const item = data.filter((item) => {
+  const item = data.find((item) => {
     item.id == req.params.noteId;
   });
-  res.send(data);
+  res.send(item);
+});
+// query parameter
+app.get("/notes", async (req, res) => {
+  console.log(req.query);
+  const { id } = req.query;
+  if (!id) {
+    res.send({});
+  }
+  const item = data.find((item) => {
+    item.id == id;
+  });
+  res.send(item);
 });
 
 app.listen(port, function () {
