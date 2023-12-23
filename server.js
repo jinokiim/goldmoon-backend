@@ -24,6 +24,15 @@ app.post(
   }
 );
 
+// path parameter
+app.get("/notes/:noteId", async (req, res) => {
+  console.log(req.params);
+  const item = data.filter((item) => {
+    item.id == req.params.noteId;
+  });
+  res.send(data);
+});
+
 app.listen(port, function () {
   console.log(`Server is running on http://localhost:${port}`);
 });
